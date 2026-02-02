@@ -19,8 +19,8 @@ def parse_arguments():
 
     parser = argparse.ArgumentParser(description='Evaluate LLaVa models')
     
-    parser.add_argument('--model', type=str, default='llava-v1.6-mistral-7b-hf', choices = ['llava-v1.6-mistral-7b-hf',
-                        'llava-onevision-qwen2-7b-ov-hf', 'llava-v1.6-34b-hf'], help='Model to use for evaluation')
+    parser.add_argument('--model', type=str, default='llava-onevision-qwen2-7b-ov-hf', choices = ['llava-onevision-qwen2-0.5b-ov-hf',
+                        'llava-onevision-qwen2-7b-ov-hf', 'llava-onevision-qwen2-72b-ov-hf'], help='Model to use for evaluation')
     parser.add_argument('--som', dest='use_som', action='store_true', default=False, help='Use of Set-of-Mark')
     parser.add_argument('--cot', dest='use_cot', action='store_true', default=False, help='Use of Chain-of-Thought')
     parser.add_argument('--class-name', dest='use_class_name', action='store_true', default=False, help='Include class name in prompt')
@@ -38,7 +38,7 @@ def parse_arguments():
 # ===== LLAVA EVALUATOR =====
 class LLaVaEvaluator(GenericEvaluator):
     
-    def __init__(self, config, model_name: str = 'llava-hf/llava-v1.6-mistral-7b-hf'):
+    def __init__(self, config, model_name: str = 'llava-hf/llava-onevision-qwen2-7b-ov-hf'):
         print(f"Loading model: {model_name}...")
         
         self.config = config
