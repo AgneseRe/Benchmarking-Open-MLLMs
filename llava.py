@@ -51,6 +51,7 @@ class LLaVaEvaluator(GenericEvaluator):
     
     def predict(self, original_image_path: str, som_image_path: str, class_name: str, use_class_name: bool) -> Tuple[str, str, float]:
         """Query LLaVa. It returns the odd_index, output response and inference time."""
+        output_text = ""
         try:
             system_instruction = generate_system_instruction(self.config)
             prompt = generate_prompt(self.config, class_name, use_class_name)
@@ -82,14 +83,14 @@ class LLaVaEvaluator(GenericEvaluator):
                 top_p=None
             )
 
-            # Inference and time spent
+            # Inference, tokens used and time spent
             start_time = time.time()
             generated_ids = self.model.generate(**inputs, generation_config=generation_config) 
-            
             generated_ids_trimmed = [out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)]
             output_text = self.processor.batch_decode(generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+            tokens_used = len(generated_ids_trimmed[0])
 
-            # Check if small model. Guide model to respond with {"odd_index" : ... }
+            # Check if small model. Guide model to continue response with {"odd_index" : ... }
             model_id_lower = self.config.MODEL_ID.lower()
             regex_match = re.search(r'(\d+\.?\d*)[bm]', model_id_lower)
             is_small_model = False
@@ -97,23 +98,31 @@ class LLaVaEvaluator(GenericEvaluator):
                 size_value = float(regex_match.group(1))
                 is_small_model = ('m' in model_id_lower) or (size_value < 2.0)
 
-            if is_small_model and "odd_index" not in output_text:
-                recovery_text = output_text + '\nFinal index: {"odd_index": }'
-                recovery_inputs = self.processor(text=recovery_text, images=images, return_tensors="pt").to(self.config.DEVICE)
+            if is_small_model and "odd_index" not in output_text.lower():
+                print(f"Small LLaVA model detected. Attempting recovery for JSON format...")
+                json_prompt = '\n\nNow provide the final answer in JSON format: {"odd_index": '
+                
+                # Concatenate JSON prompt to existing response and continue generation
+                extended_input_ids = torch.cat([
+                    generated_ids,
+                    self.processor.tokenizer.encode(json_prompt, return_tensors="pt", add_special_tokens=False).to(self.config.DEVICE)
+                ], dim=1)
                 
                 recovery_ids = self.model.generate(
-                    **recovery_inputs, 
-                    max_new_tokens=10,
-                    do_sample=False
+                    input_ids=extended_input_ids,
+                    max_new_tokens=20,
+                    do_sample=False,
+                    pad_token_id=self.model.config.pad_token_id
                 )
                 
-                new_ids = recovery_ids[0][len(recovery_inputs.input_ids[0]):]
-                recovery_output = self.processor.decode(new_ids, skip_special_tokens=True)
+                # Extract only new tokens
+                new_tokens = recovery_ids[0][extended_input_ids.shape[1]:]
+                recovery_output = self.processor.decode(new_tokens, skip_special_tokens=True)
                 
-                output_text = output_text + ' {"odd_index":' + recovery_output
+                tokens_used += len(new_tokens)
+                output_text = output_text + json_prompt + recovery_output
 
             end_time = time.time()
-            tokens_used = len(generated_ids_trimmed[0])
 
             # Clean potential markdown formatting
             output_text = output_text.strip()
