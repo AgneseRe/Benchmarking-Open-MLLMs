@@ -108,8 +108,10 @@ class LLaVaEvaluator(GenericEvaluator):
                     self.processor.tokenizer.encode(json_prompt, return_tensors="pt", add_special_tokens=False).to(self.config.DEVICE)
                 ], dim=1)
                 
+                extended_attention_mask = torch.ones_like(extended_input_ids)   # all valid tokens
                 recovery_ids = self.model.generate(
                     input_ids=extended_input_ids,
+                    attention_mask=extended_attention_mask,
                     max_new_tokens=20,
                     do_sample=False,
                     pad_token_id=self.model.config.pad_token_id
