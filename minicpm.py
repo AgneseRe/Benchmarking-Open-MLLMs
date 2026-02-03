@@ -19,7 +19,7 @@ def parse_arguments():
 
     parser = argparse.ArgumentParser(description='Evaluate MiniCPM models')
     
-    parser.add_argument('--model', type=str, default='MiniCPM-V-4', choices = ['MiniCPM-V-4'], 
+    parser.add_argument('--model', type=str, default='MiniCPM-V-4', choices = ['MiniCPM-V-4', 'MiniCPM-V-4_5'], 
                         help='Model to use for evaluation') # for scalability and future comparison with other models
     parser.add_argument('--som', dest='use_som', action='store_true', default=False, help='Use of Set-of-Mark')
     parser.add_argument('--cot', dest='use_cot', action='store_true', default=False, help='Use of Chain-of-Thought')
