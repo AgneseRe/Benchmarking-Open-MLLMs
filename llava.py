@@ -32,7 +32,7 @@ def parse_arguments():
     parser.add_argument('--batch-size', type=int, default=1)
     parser.add_argument('--max-samples', type=int, default=None)
     parser.add_argument('--device', type=str, default='cuda')
-    parser.add_argument('--quantization', type=bool, default=False)
+    parser.add_argument('--quantization', action='store_true', default=False, help='Enable 4-bit quantization')
     
     return parser.parse_args()
 
@@ -43,7 +43,7 @@ class LLaVaEvaluator(GenericEvaluator):
         print(f"Loading model: {model_name}...")
         
         self.config = config
-        load_kwargs = get_model_load_args(self.config.quantization)
+        load_kwargs = get_model_load_args(self.config.QUANTIZATION)
     
         self.model = AutoModelForImageTextToText.from_pretrained(model_name, **load_kwargs)
         self.processor = AutoProcessor.from_pretrained(model_name, use_fast=False)
@@ -85,12 +85,35 @@ class LLaVaEvaluator(GenericEvaluator):
             # Inference and time spent
             start_time = time.time()
             generated_ids = self.model.generate(**inputs, generation_config=generation_config) 
-            end_time = time.time()
             
-            # Model answer and tokens used
             generated_ids_trimmed = [out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)]
-            tokens_used = len(generated_ids_trimmed[0])
             output_text = self.processor.batch_decode(generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+
+            # Check if small model. Guide model to respond with {"odd_index" : ... }
+            model_id_lower = self.config.MODEL_ID.lower()
+            regex_match = re.search(r'(\d+\.?\d*)[bm]', model_id_lower)
+            is_small_model = False
+            if regex_match:
+                size_value = float(regex_match.group(1))
+                is_small_model = ('m' in model_id_lower) or (size_value < 2.0)
+
+            if is_small_model and "odd_index" not in output_text:
+                recovery_text = output_text + '\nFinal index: {"odd_index": }'
+                recovery_inputs = self.processor(text=recovery_text, images=images, return_tensors="pt").to(self.config.DEVICE)
+                
+                recovery_ids = self.model.generate(
+                    **recovery_inputs, 
+                    max_new_tokens=10,
+                    do_sample=False
+                )
+                
+                new_ids = recovery_ids[0][len(recovery_inputs.input_ids[0]):]
+                recovery_output = self.processor.decode(new_ids, skip_special_tokens=True)
+                
+                output_text = output_text + ' {"odd_index":' + recovery_output
+
+            end_time = time.time()
+            tokens_used = len(generated_ids_trimmed[0])
 
             # Clean potential markdown formatting
             output_text = output_text.strip()

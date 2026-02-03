@@ -78,9 +78,26 @@ def generate_prompt(config, class_name: str, use_class_name: bool) -> str:
     som_prompt = [" and its Set-of-Mark annotated version", " marked"] if config.USE_SOM else ["", ""]
     base_prompt = f"Analyze the provided image{som_prompt[0]}. Identify the odd-one-out object among the set of{som_prompt[1]} objects."
     if use_class_name:
-        return f"{base_prompt} The objects in the image are instances of the class '{class_name}'."
+        full_prompt = f"{base_prompt} The objects in the image are instances of the class '{class_name}'."
     else:
-        return base_prompt
+        full_prompt = base_prompt
+
+    # Check if small model. Guide model to respond with {"odd_index" : ... }
+    model_id_lower = config.MODEL_ID.lower()
+    regex_match = re.search(r'(\d+\.?\d*)[bm]', model_id_lower)
+
+    is_small_model = False
+    if regex_match:
+        size_value = float(regex_match.group(1))
+        is_small_model = ('m' in model_id_lower) or (size_value < 2.0)
+
+    if is_small_model:
+        if config.USE_COT:
+            return f"{full_prompt} Reasoning: "
+        else:
+            return f"{full_prompt} Respond ONLY with JSON format. Output: {{\"odd_index\":"
+    
+    return full_prompt
     
 # ===== ABSTRACT EVALUATOR CLASS =====
 class GenericEvaluator(ABC):

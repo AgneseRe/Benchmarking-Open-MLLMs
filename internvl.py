@@ -19,7 +19,7 @@ def parse_arguments():
 
     parser = argparse.ArgumentParser(description='Evaluate InternVL models')
     
-    parser.add_argument('--model', type=str, default='OpenGVLab/InternVL3-2B-hf', choices = ['InternVL3-2B-hf', 
+    parser.add_argument('--model', type=str, default='OpenGVLab/InternVL3-2B-hf', choices = ['InternVL3-1B-hf', 'InternVL3-2B-hf', 
                         'InternVL3-8B-hf', 'InternVL3-14B-hf', 'InternVL3_5-8B-hf'], help='Model to use for evaluation')
     parser.add_argument('--som', dest='use_som', action='store_true', default=False, help='Use of Set-of-Mark')
     parser.add_argument('--cot', dest='use_cot', action='store_true', default=False, help='Use of Chain-of-Thought')
@@ -32,7 +32,7 @@ def parse_arguments():
     parser.add_argument('--batch-size', type=int, default=1)
     parser.add_argument('--max-samples', type=int, default=None)
     parser.add_argument('--device', type=str, default='cuda')
-    parser.add_argument('--quantization', type=bool, default=False)
+    parser.add_argument('--quantization', action='store_true', default=False, help='Enable 4-bit quantization')
     
     return parser.parse_args()
 
@@ -43,7 +43,7 @@ class InternEvaluator(GenericEvaluator):
         print(f"Loading model: {model_name}...")
         
         self.config = config
-        load_kwargs = get_model_load_args(self.config.quantization)
+        load_kwargs = get_model_load_args(self.config.QUANTIZATION)
     
         self.model = AutoModelForImageTextToText.from_pretrained(model_name, **load_kwargs)
         self.processor = AutoProcessor.from_pretrained(model_name, use_fast=False)
