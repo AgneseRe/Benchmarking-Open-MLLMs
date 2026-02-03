@@ -32,6 +32,7 @@ def parse_arguments():
     parser.add_argument('--batch-size', type=int, default=1)
     parser.add_argument('--max-samples', type=int, default=None)
     parser.add_argument('--device', type=str, default='cuda')
+    parser.add_argument('--quantization', type=bool, default=False)
     
     return parser.parse_args()
 
@@ -42,7 +43,7 @@ class LLaVaEvaluator(GenericEvaluator):
         print(f"Loading model: {model_name}...")
         
         self.config = config
-        load_kwargs = get_model_load_args(model_name)
+        load_kwargs = get_model_load_args(self.config.quantization)
     
         self.model = AutoModelForImageTextToText.from_pretrained(model_name, **load_kwargs)
         self.processor = AutoProcessor.from_pretrained(model_name, use_fast=False)

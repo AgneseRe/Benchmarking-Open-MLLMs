@@ -30,6 +30,7 @@ class Config:
         self.BATCH_SIZE = args.batch_size
         self.MAX_SAMPLES = args.max_samples
         self.DEVICE = args.device
+        self.QUANTIZATION = args.quantization
         
         # Create output directory if needed
         Path(self.OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
@@ -39,14 +40,15 @@ class Config:
         print("=" * 70)
         print("CONFIGURATION")
         print("=" * 70)
-        print(f"Model:           {self.MODEL_ID}")
-        print(f"Use SOM:         {self.USE_SOM}")
-        print(f"Use CoT:         {self.USE_COT}")
-        print(f"Use Class Name:  {self.USE_CLASS_NAME}")
-        print(f"Data Directory:  {self.DATA_DIR}")
+        print(f"Model:            {self.MODEL_ID}")
+        print(f"Use SOM:          {self.USE_SOM}")
+        print(f"Use CoT:          {self.USE_COT}")
+        print(f"Use Class Name:   {self.USE_CLASS_NAME}")
+        print(f"Data Directory:   {self.DATA_DIR}")
         print(f"Output Directory: {self.OUTPUT_DIR}")
-        print(f"Device:          {self.DEVICE}")
-        print(f"Max Samples:     {self.MAX_SAMPLES or 'All'}")
+        print(f"Device:           {self.DEVICE}")
+        print(f"Max Samples:      {self.MAX_SAMPLES or 'All'}")
+        print(f"Quantization:     {self.QUANTIZATION}")
         print("=" * 70)
 
 # ===== PROMPT GENERATION =====
@@ -87,9 +89,7 @@ class GenericEvaluator(ABC):
         pass
 
 # ===== MODEL UTILITIES ===== 
-def get_model_load_args(model_name: str) :
-
-    is_large_model = any(size in model_name.lower() for size in ["32b", "34b", "38b", "72b", "78b"])
+def get_model_load_args(quantization: bool = False) :
   
     load_kwargs = {
         "attn_implementation": "sdpa",
@@ -97,17 +97,17 @@ def get_model_load_args(model_name: str) :
         "dtype": torch.bfloat16
     }
 
-    if is_large_model:
-        print("Large model detected. Applying 4-bit quantization.")
+    if quantization:
+        print("Applying 4-bit quantization.")
         quantization_config = BitsAndBytesConfig(
-        load_in_4bit=True, 
-        bnb_4bit_compute_dtype=torch.bfloat16,
-        bnb_4bit_quant_type="nf4", 
-        bnb_4bit_use_double_quant=True
+            load_in_4bit=True, 
+            bnb_4bit_compute_dtype=torch.bfloat16,
+            bnb_4bit_quant_type="nf4", 
+            bnb_4bit_use_double_quant=True
         )
         load_kwargs["quantization_config"] = quantization_config
     else:
-        print("Small model detected. Loading in full precision (bfloat16).")
+        print("Loading in full precision (bfloat16).")
     
     return load_kwargs
 
