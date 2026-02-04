@@ -1,0 +1,152 @@
+{
+    "InternVL3-1B": {
+        "class_name": {
+            "no_cot": "1nDpDtdRYMtg_TVQNqlJjHUXTWSL36AjG",
+            "with_cot": "1MIKsAhcVmlGpodvc9G5pam2ry2u_zsjZ"
+        },
+        "no_class_name": {
+            "no_cot": "1QD50UvVfKRWlzuiWomW-7XeGZ91fMSrc",
+            "with_cot": "1DrXi7Pz6w0xRcEyMtgeEAyZv27FyjWbs"
+        }
+    },
+    "InternVL3-2B": {
+        "class_name": {
+            "no_cot": "1ZKHUjOYLDjwNenqhICM2FukKEGOaZLi3",
+            "with_cot": "1qBdBEAs5Q5f5NDqhTpcFBTZJva3h1sxr"
+        },
+        "no_class_name": {
+            "no_cot": "1Ks7MHB5Oh8-W9Myo0fnM6hxeEocjCeZh",
+            "with_cot": "1ZOEa8umkJA0KR1q-oxTA9Kb8N_VOajGa"
+        }
+    },
+    "InternVL3-8B": {
+        "class_name": {
+            "no_cot": "1Z9l0rSg2IPGMP2FPeorHF2-htXEyTnOq",
+            "with_cot": "1XU-eA1ltabiKTr2mCOgGp5rZfWfYCxqp"
+        },
+        "no_class_name": {
+            "no_cot": "1mIDCUKsmcs3YJfyBVmMBpUG_M3ZdvVze",
+            "with_cot": "1BF4nlbT0_it1Us5wh5IaayYVEA3kDqYr"
+        }
+    },
+    "InternVL3-14B": {
+        "class_name": {
+            "no_cot": "1f6QV8wlll-FG7DjxMHIYJk9yDJaBBP4s",
+            "with_cot": "1b8LBc-mzDpkwPaRbwW5QR-DMG3cs_IPQ"
+        },
+        "no_class_name": {
+            "no_cot": "1bJjdTSXHCCGCKRsHthUvYLzjkBecx0Lw",
+            "with_cot": "14F1aar5vNGkEPhZfZmYo3K-dwltJK7BT"
+        }
+    },
+    "InternVL3_5-8B": {
+        "class_name": {
+            "no_cot": "1nuxY0Z7yuYQcWgSCqew8LKTIay3CQ0so",
+            "with_cot": "1qFfmM6eUs0rRsWOXZm1rDInDSJM7telj"
+        },
+        "no_class_name": {
+            "no_cot": "1ZHthPsT2D28Z1GpRiGhdFYyf89jy9fz5",
+            "with_cot": "1LMMuCm2GIWQ6woqoINuJ4FWD4pOajfkm"
+        }
+    },
+    "InternVL3_5-38B": {
+        "class_name": {
+            "no_cot": "1qVD3lOM9RFKyxez1fejqvUMRYsoDSJ-_",
+            "with_cot": "19g7yx0t5YzAkhprLA_uJn69EGLFCgre0"
+        },
+        "no_class_name": {
+            "no_cot": "1a4iD1j45Di6717N_yJXtt9pVgCAXZnhv",
+            "with_cot": "1BKFwqeq9mUgs2lQGQiE_ad3ThgPu2BYj"
+        }
+    },
+    "llava-onevision-qwen2-0.5b-ov": {
+        "class_name": {
+            "no_cot": "1g8LxRmrtSdG2e3miebAVabjBdprggOP4",
+            "with_cot": "1N84gFTG1J4kMT2GvhWG5HqSPfmukQQXi"
+        },
+        "no_class_name": {
+            "no_cot": "1XVvmDmXPtLgsxdhV0Nv0Um-1Lcsak5Xh",
+            "with_cot": "1ahvu5G1aLTn3lsI0rr7cw1ID47Al8XCk"
+        }
+    },
+    "llava-onevision-qwen2-7b-ov": {
+        "class_name": {
+            "no_cot": "1U4t66Wl2v8O71Ha1EhiSPdW11KC2dU7q",
+            "with_cot": "19edW2a_W8XBKk0ED_2LI3qWd3jLikNH7"
+        },
+        "no_class_name": {
+            "no_cot": "1EVi3HTvlS48pwKgYZEqUzHvHglx0pxX1",
+            "with_cot": "1N9Jbr2SfoF-d51aT0dQVg2qYEwKjwlHx"
+        }
+    },
+    "llava-onevision-qwen2-72b-ov": {
+        "class_name": {
+            "no_cot": "10Py95bkLHBkQ9VVRa4TjHhycjyIL6VKj",
+            "with_cot": "1zo-n4JZKk3r4v40uIOkUbN6UqovmRdI1"
+        },
+        "no_class_name": {
+            "no_cot": "1IeaxQ2KVk2d_ZQqA8VxqTqse5UCTYqi3",
+            "with_cot": "1IcIpVVEIG7nTkubx7WU4ZxNvCXIEbuds"
+        }
+    },
+    "MiniCPM-V-4": {
+        "class_name": {
+            "no_cot": "1TU4bBvtVYI-bYEEdUw3xYMmJd10s7WQB",
+            "with_cot": "1v-q3pyB60_IBVqWhemQpgmaEh11eFM0z"
+        },
+        "no_class_name": {
+            "no_cot": "1ZpRPmBefahywN-uXkc5j8p_VGTf6HEbO",
+            "with_cot": "1Sgh2mSI8v6cKVPK4cfdfP__fzcnT9nAj"
+        }
+    },
+    "MiniCPM-V-4_5": {
+        "class_name": {
+            "no_cot": "1X4B0-ACrbvn5MrXbFkmhwqj58GflXxto",
+            "with_cot": "1pJtjLktu4wKA-WM3vtpRCkDi-XiXK3Ew"
+        },
+        "no_class_name": {
+            "no_cot": "1rYgLNejQ39ZPCfIgnJQqEZYkkL31s0yo",
+            "with_cot": "1BfJh_CYazVhcaiFox5TUooJac1lUF_KB"
+        }
+    },
+    "Qwen2.5-VL-3B-Instruct": {
+        "class_name": {
+            "no_cot": "1i4urcgMtUjmdv6Ke6N6XNtg2KGwKTa5o",
+            "with_cot": "1iu7e5aPfszCsOvR3zKAgOhjCcdW45grp"
+        },
+        "no_class_name": {
+            "no_cot": "1sFgFvW2-Jw_4K-3GLK4RIAZ6-FBnUvnw",
+            "with_cot": "1UJNR86uH9Q8rKUv0Yc74ghpbHty2uGYy"
+        }
+    },
+    "Qwen2.5-VL-7B-Instruct": {
+        "class_name": {
+            "no_cot": "1i8Ueg1Oa21r6BsgIR68rGRogBhX8AFWK",
+            "with_cot": "19gf_KhH2n0WGgG8y6273t-pn8TyfRCuI"
+        },
+        "no_class_name": {
+            "no_cot": "1uhg4jnWoV5B7UqUIqBT0e--gaFgTe3a5",
+            "with_cot": "18jMiSMyc7YIwqyiJMpup7A7JxBy-DGqf"
+        }
+    },
+    "Qwen2.5-VL-32B-Instruct": {
+        "class_name": {
+            "no_cot": "1dig7JD__2jRjpfsFKUoX6MafNH2tqY49",
+            "with_cot": "1cSBfNrvuBwJnB0DFxTyqfK_6KhovgZ05"
+        },
+        "no_class_name": {
+            "no_cot": "1id6IwbLi4D7hwQ5VeWq7F6hFsdnhRvvd",
+            "with_cot": "11aJ8uYzKuwEX2uTPAkIi_tZQsWw2YxLi"
+        }
+    },
+    "Qwen3-VL-4B-Instruct": {
+        "class_name": {
+            "no_cot": "1SgVj-9flgNmtN-N9xCMX5NV0wNzrMYKs",
+            "with_cot": "19wEajs3VaSErx0v-zxHI2B7-ImHHgpmi"
+        },
+        "no_class_name": {
+            "no_cot": "1QexoiKTzXCCKMaK74dsZyhxqDAbyREQO",
+            "with_cot": "19A5tjYAnsDtoWivFO9gZ4LUiDV8K2TUF"
+        }
+    }
+}
